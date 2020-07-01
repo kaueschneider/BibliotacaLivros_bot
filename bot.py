@@ -1,8 +1,15 @@
-from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler, Updater
+from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler, Filters, MessageHandler, Updater
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 
 STATE1 = 1
 STATE2 = 2
+
+def comands():
+    print('/star Inicia o bot')
+    print('/feedback Deixe um comentario para mim ❤️')
+    print('/nota Serve para deixar sua nota para o bot')
+    print('/nota Serve para deixar sua nota para o bot')
+
 
 def askForNota(update, context):
     question = 'Qual nota você dá para o tutorial?'
@@ -13,6 +20,12 @@ def askForNota(update, context):
           InlineKeyboardButton("🤔 4", callback_data='4'),
           InlineKeyboardButton("😍 5", callback_data='5')]])
     update.message.reply_text(question, reply_markup=keyboard)
+
+def getNota(update, context):
+    query = update.callback_query
+    print(str(query.data))
+    message = 'Obrigada pela sua nota: ' + str(query.data)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 def feedback(update, context):
     try:
@@ -60,6 +73,11 @@ def main():
     updater = Updater(token=token, use_context=True)
 
     updater.dispatcher.add_handler(CommandHandler('start', welcome))
+
+    updater.dispatcher.add_handler(CommandHandler('//', comands))
+
+    updater.dispatcher.add_handler(CommandHandler('nota', askForNota))
+    updater.dispatcher.add_handler(CallbackQueryHandler(getNota))
 
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('feedback', feedback)],
