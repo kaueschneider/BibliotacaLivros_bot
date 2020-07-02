@@ -74,7 +74,7 @@ def main():
 
     updater.dispatcher.add_handler(CommandHandler('start', welcome))
 
-    updater.dispatcher.add_handler(CommandHandler('//', comands))
+    #updater.dispatcher.add_handler(CommandHandler('//', comands))
 
     updater.dispatcher.add_handler(CommandHandler('nota', askForNota))
     updater.dispatcher.add_handler(CallbackQueryHandler(getNota))
